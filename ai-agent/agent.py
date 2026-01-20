@@ -24,8 +24,6 @@ client = OpenAI(
 # ✅ COST-EFFECTIVE OPENAI MODEL
 MODEL_NAME = "gpt-4o-mini"
 
-# MCP Server configuration
-MCP_SERVER_URL = os.getenv("MCP_SERVER_URL", "http://localhost:8003")
 
 class Message(BaseModel):
     role: str
@@ -124,55 +122,30 @@ User said: "{user_input}"
         return None, None
 
     async def _execute_mcp_tool(self, tool_name: str, params: Dict[str, Any]) -> str:
-        BACKEND_BASE_URL = os.getenv("BACKEND_BASE_URL", "http://localhost:8000")
-        # Use the session token in the Authorization header
-        session_token = params.get("session_token", "")
+        # Get the MCP server URL from environment variable
+        MCP_SERVER_URL = os.getenv("MCP_SERVER_URL", "http://localhost:8003")
         headers = {"Content-Type": "application/json"}
-        if session_token:
-            headers["Authorization"] = f"Bearer {session_token}"
+
+        # Prepare the tool call request
+        tool_call_data = {
+            "tool_name": tool_name,
+            "parameters": params
+        }
 
         async with httpx.AsyncClient() as http:
-            if tool_name == "create_task":
-                # Extract title and description from params, removing session_token
-                task_data = {
-                    "title": params.get("title", ""),
-                    "description": params.get("description", "")
-                }
-                r = await http.post(f"{BACKEND_BASE_URL}/api/tasks/", json=task_data, headers=headers)
-                return "Task added successfully." if r.status_code in (200, 201) else r.text
+            try:
+                # Call the MCP server's HTTP wrapper endpoint
+                r = await http.post(f"{MCP_SERVER_URL}/call_tool", json=tool_call_data, headers=headers)
 
-            if tool_name == "get_tasks":
-                r = await http.get(f"{BACKEND_BASE_URL}/api/tasks/", headers=headers)
                 if r.status_code == 200:
-                    tasks = r.json()
-                    if not tasks:
-                        return "No tasks found for you. Feel free to add one!"
-                    return r.text
+                    response_data = r.json()
+                    return response_data.get("result", "Operation completed successfully.")
                 else:
-                    return r.text
-
-            if tool_name == "update_task":
-                task_data = {"completed": True}  # Only set completed status to True
-                if "title" in params:
-                    task_data["title"] = params["title"]
-                if "description" in params:
-                    task_data["description"] = params["description"]
-
-                r = await http.put(
-                    f"{BACKEND_BASE_URL}/api/tasks/{params['task_id']}",
-                    json=task_data,
-                    headers=headers
-                )
-                return "Task updated successfully." if r.status_code == 200 else r.text
-
-            if tool_name == "delete_task":
-                r = await http.delete(
-                    f"{BACKEND_BASE_URL}/api/tasks/{params['task_id']}",
-                    headers=headers
-                )
-                return "Task deleted successfully." if r.status_code == 200 else r.text
-
-        return "Unknown action"
+                    return f"Error calling MCP tool: {r.text}"
+            except httpx.RequestError as e:
+                return f"Error connecting to MCP server: {str(e)}"
+            except Exception as e:
+                return f"Unexpected error: {str(e)}"
 
 # ✅ SINGLETON
 agent_instance = Agent()
