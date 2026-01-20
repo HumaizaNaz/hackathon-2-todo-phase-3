@@ -1,0 +1,95 @@
+# Theme Management Skill
+name: theme-management
+version: 1.0.0
+description: Reusable skill for managing and applying themes across the application
+category: styling
+tags: [theme, tailwind, neon, dark-mode, light-mode]
+
+# Parameters that can be passed to the skill
+parameters:
+  - name: theme_type
+    type: string
+    required: true
+    enum: [neon, dark, light, custom]
+    description: Type of theme to apply
+
+  - name: theme_variables
+    type: object
+    required: false
+    description: Custom theme variables to apply
+
+  - name: components
+    type: array
+    required: false
+    default: ["all"]
+    description: Components to apply theme to
+
+# Prerequisites for the skill
+prerequisites:
+  - file_exists: ./frontend/src/styles/globals.css
+  - file_exists: ./frontend/src/context/ThemeContext.tsx
+  - has_dependency: tailwindcss
+
+# Execution steps
+steps:
+  # Step 1: Load current theme configuration
+  - name: load_theme_config
+    action: read_file
+    target: ./frontend/src/styles/globals.css
+    output: current_theme
+
+  # Step 2: Apply theme variables
+  - name: apply_theme_variables
+    action: modify_file
+    target: ./frontend/src/styles/globals.css
+    operations:
+      - update_css_variables: ${theme_variables}
+      - add_theme_classes: ${theme_type}
+
+  # Step 3: Update ThemeContext if needed
+  - name: update_theme_context
+    action: modify_file
+    target: ./frontend/src/context/ThemeContext.tsx
+    operations:
+      - update_theme_state: ${theme_type}
+      - add_theme_functions: ${theme_type}
+
+  # Step 4: Apply theme to specified components
+  - name: apply_to_components
+    action: foreach
+    items: ${components}
+    operation:
+      action: modify_file
+      target: ./frontend/src/components/${item}/index.tsx
+      operations:
+        - add_theme_classes: ${theme_type}
+
+  # Step 5: Validate theme consistency
+  - name: validate_theme
+    action: check_consistency
+    targets:
+      - ./frontend/src/styles/globals.css
+      - ./frontend/src/context/ThemeContext.tsx
+      - ./frontend/src/components/**/*.tsx
+
+# Output of the skill
+output:
+  success_message: "Theme ${theme_type} applied successfully"
+  modified_files:
+    - ./frontend/src/styles/globals.css
+    - ./frontend/src/context/ThemeContext.tsx
+  theme_summary:
+    applied_variables: ${theme_variables}
+    affected_components: ${components}
+
+# Rollback capability
+rollback:
+  - restore_from_backup: ./frontend/src/styles/globals.css.backup
+  - restore_from_backup: ./frontend/src/context/ThemeContext.tsx.backup
+
+# Reusable patterns this skill implements
+patterns:
+  - css_variables_for_theming
+  - context_api_for_theme_state
+  - consistent_color_palette
+  - dark_light_mode_toggling

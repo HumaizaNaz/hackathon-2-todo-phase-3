@@ -1,0 +1,12 @@
+# .spec-kit/config.yaml
+# Basic configuration for project automation
+# This file will be expanded as automation needs evolve.
+project:
+  name: "Phase 2 Todo Full-Stack Web App"
+  version: "0.1.0"
+  description: "A multi-user todo web application with JWT auth and persistent Neon DB."
+  monorepo: true
+  backend_path: "backend"
+  frontend_path: "frontend"
+  specs_path: "specs"
+  features_path: "specs/001-phase2-web-app"

@@ -1,0 +1,135 @@
+# Component Creation Skill
+name: component-creation
+version: 1.0.0
+description: Reusable skill for creating new React components with proper structure
+category: component-development
+tags: [react, components, typescript, tailwind]
+
+# Parameters that can be passed to the skill
+parameters:
+  - name: component_name
+    type: string
+    required: true
+    description: Name of the component to create
+
+  - name: component_type
+    type: string
+    required: false
+    default: "functional"
+    enum: ["functional", "class", "hoc", "hook"]
+    description: Type of component to create
+
+  - name: styling_type
+    type: string
+    required: false
+    default: "tailwind"
+    enum: ["tailwind", "css_modules", "styled_components", "none"]
+    description: Styling approach to use
+
+  - name: with_tests
+    type: boolean
+    required: false
+    default: true
+    description: Whether to create test files
+
+  - name: with_stories
+    type: boolean
+    required: false
+    default: false
+    description: Whether to create storybook stories
+
+# Prerequisites for the skill
+prerequisites:
+  - directory_exists: ./frontend/src/components
+  - has_dependency: react
+  - has_dependency: typescript
+
+# Execution steps
+steps:
+  # Step 1: Validate component name
+  - name: validate_name
+    action: validate_identifier
+    target: ${component_name}
+    output: validated_name
+
+  # Step 2: Create component directory structure
+  - name: create_directory
+    action: create_directory
+    target: ./frontend/src/components/${validated_name}
+
+  # Step 3: Create main component file
+  - name: create_component_file
+    action: create_file
+    target: ./frontend/src/components/${validated_name}/${validated_name}.tsx
+    template: ${component_type}_component_template
+    variables:
+      name: ${validated_name}
+      styling: ${styling_type}
+
+  # Step 4: Create type definitions
+  - name: create_types
+    action: create_file
+    target: ./frontend/src/components/${validated_name}/types.ts
+    template: component_types_template
+    variables:
+      name: ${validated_name}
+
+  # Step 5: Create index file for exports
+  - name: create_index
+    action: create_file
+    target: ./frontend/src/components/${validated_name}/index.ts
+    content: |
+      export { default } from './${validated_name}';
+      export * from './types';
+
+  # Step 6: Create test file if requested
+  - name: create_test
+    action: conditional
+    condition: ${with_tests}
+    operation:
+      action: create_file
+      target: ./frontend/src/components/${validated_name}/${validated_name}.test.tsx
+      template: component_test_template
+      variables:
+        name: ${validated_name}
+
+  # Step 7: Create storybook story if requested
+  - name: create_story
+    action: conditional
+    condition: ${with_stories}
+    operation:
+      action: create_file
+      target: ./frontend/src/components/${validated_name}/${validated_name}.stories.tsx
+      template: component_story_template
+      variables:
+        name: ${validated_name}
+
+  # Step 8: Add component to main components index if it doesn't exist
+  - name: update_main_index
+    action: modify_file
+    target: ./frontend/src/components/index.ts
+    operation: add_export
+    content: export * from './${validated_name}';
+
+# Output of the skill
+output:
+  success_message: "Component ${validated_name} created successfully"
+  created_files:
+    - ./frontend/src/components/${validated_name}/${validated_name}.tsx
+    - ./frontend/src/components/${validated_name}/types.ts
+    - ./frontend/src/components/${validated_name}/index.ts
+  optional_files:
+    test: ${with_tests} ./frontend/src/components/${validated_name}/${validated_name}.test.tsx
+    story: ${with_stories} ./frontend/src/components/${validated_name}/${validated_name}.stories.tsx
+
+# Rollback capability
+rollback:
+  - remove_directory: ./frontend/src/components/${validated_name}
+  - remove_from_index: ./frontend/src/components/index.ts
+
+# Reusable patterns this skill implements
+patterns:
+  - component_folder_pattern
+  - type_safe_components
+  - consistent_naming_convention
+  - modular_architecture

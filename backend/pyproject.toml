@@ -1,0 +1,24 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "FastAPI backend for Todo Web App"
+requires-python = ">=3.12.9"
+dependencies = [
+    "fastapi",
+    "sqlmodel",
+    "uvicorn",
+    "alembic",
+    "pydantic-settings",
+    "python-jose[cryptography]",
+    "python-multipart",
+    "psycopg2-binary",
+    "passlib==1.7.4",
+    "bcrypt==3.2.0",
+    "python-dotenv",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest",
+    "httpx",
+]

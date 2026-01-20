@@ -1,0 +1,80 @@
+# UI Enhancement Skill
+name: ui-enhancements
+version: 1.0.0
+description: Reusable skill for enhancing UI components in the frontend
+category: ui-design
+tags: [react, components, styling, tailwind]
+
+# Parameters that can be passed to the skill
+parameters:
+  - name: component_name
+    type: string
+    required: true
+    description: Name of the component to enhance
+
+  - name: styling_options
+    type: object
+    required: false
+    description: Styling options to apply
+
+  - name: responsive_features
+    type: boolean
+    required: false
+    default: true
+    description: Whether to include responsive features
+
+# Prerequisites for the skill
+prerequisites:
+  - file_exists: ./frontend/src/components/${component_name}.tsx
+  - has_dependency: tailwindcss
+
+# Execution steps
+steps:
+  # Step 1: Analyze current component
+  - name: analyze_component
+    action: code_analysis
+    target: ./frontend/src/components/${component_name}.tsx
+    output: component_analysis
+
+  # Step 2: Apply styling enhancements
+  - name: apply_styling
+    action: modify_file
+    target: ./frontend/src/components/${component_name}.tsx
+    operations:
+      - add_tailwind_classes: ${styling_options.classes}
+      - update_props_interface: ${styling_options.props}
+      - add_responsive_breakpoints: ${responsive_features}
+
+  # Step 3: Add accessibility features
+  - name: add_accessibility
+    action: modify_file
+    target: ./frontend/src/components/${component_name}.tsx
+    operations:
+      - add_aria_labels
+      - add_keyboard_navigation
+      - ensure_color_contrast
+
+  # Step 4: Validate changes
+  - name: validate_changes
+    action: lint_component
+    target: ./frontend/src/components/${component_name}.tsx
+
+# Output of the skill
+output:
+  success_message: "UI component ${component_name} enhanced successfully"
+  modified_files:
+    - ./frontend/src/components/${component_name}.tsx
+  recommendations:
+    - test_on_multiple_screen_sizes
+    - verify_accessibility_compliance
+
+# Rollback capability
+rollback:
+  - restore_from_backup: ./frontend/src/components/${component_name}.tsx.backup
+
+# Reusable patterns this skill implements
+patterns:
+  - atomic_design_principles
+  - mobile_first_responsiveness
+  - accessible_ui_components
+  - consistent_design_system

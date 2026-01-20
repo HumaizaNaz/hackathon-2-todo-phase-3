@@ -1,0 +1,206 @@
+
+@import "tailwindcss";
+
+@tailwind utilities;
+
+:root {
+  /* Light Mode - Professional Neon */
+  --bg-primary: #f8fafc; /* Clean light background */
+  --bg-card: #ffffff; /* Pure white cards */
+  --bg-input: #f1f5f9; /* Subtle input background */
+  --text-primary: #0f172a; /* Dark gray for readability */
+  --text-secondary: #64748b; /* Muted secondary text */
+  --border-neon: #ff00ff80; /* Pink glow effect */
+  --neon-pink: #ff00ff; /* Vibrant pink */
+  --neon-cyan: #00ffff; /* Vibrant cyan */
+  --neon-purple: #9d00ff; /* Vibrant purple */
+}
+
+.dark {
+  /* Dark Mode - Strong Neon */
+  --bg-primary: #0a0a0f; /* Deep black */
+  --bg-card: #12121a;
+  --bg-input: #1e293b; /* Darker input background */
+  --text-primary: #e0e0ff;
+  --text-secondary: #a0a0c0;
+  --border-neon: #ff00ffaa; /* Bright pink glow */
+  --neon-pink: #ff00ff;
+  --neon-cyan: #00ffff;
+  --neon-purple: #9d00ff;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease;
+}
+
+/* Custom utility classes for neon effects */
+.neon-text {
+  color: #00ffff;
+  text-shadow: 0 0 8px #00ffff, 0 0 15px #00ffff;
+}
+
+.light .neon-text {
+  text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+  color: #008080; /* Darker cyan for better light mode contrast */
+}
+
+.dark .neon-text {
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+}
+
+.neon-text-gradient {
+  background: linear-gradient(45deg, #ff00ff, #00ffff, #9d00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+}
+
+.neon-border {
+  @apply border-2 rounded-lg;
+  border-color: #ff00ff;
+  box-shadow: 0 0 10px #ff00ff;
+}
+
+.dark .neon-border {
+  box-shadow: 0 0 15px #ff00ff, 0 0 30px #ff00ff;
+}
+
+.neon-card {
+  @apply bg-[var(--bg-card)] rounded-xl p-6 shadow-lg transition-all duration-300 border border-[color:var(--border-neon)];
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 15px var(--border-neon);
+}
+
+.neon-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px var(--border-neon);
+}
+
+.neon-button-primary {
+  @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center border-2;
+  background: linear-gradient(45deg, #ff00ff, #9d00ff);
+  border-color: #ff00ff;
+  color: white;
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.neon-button-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(255, 0, 255, 0.8);
+  background: linear-gradient(45deg, #ff33ff, #b033ff);
+}
+
+.neon-button-secondary {
+  @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center border-2;
+  background: transparent;
+  border-color: #00ffff;
+  color: #00ffff;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.neon-button-secondary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+  background: rgba(0, 255, 255, 0.1);
+}
+
+/* Animated Blob Background */
+.blob-c {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  filter: blur(60px);
+  animation: blob-move 15s infinite alternate;
+  opacity: 0.6;
+}
+
+.blob:nth-child(1) {
+  width: 300px;
+  height: 300px;
+  background: #ff00ff;
+  top: 20%;
+  left: 20%;
+  animation-delay: 0s;
+}
+
+.blob:nth-child(2) {
+  width: 250px;
+  height: 250px;
+  background: #00ffff;
+  top: 60%;
+  left: 60%;
+  animation-delay: -5s;
+}
+
+.blob:nth-child(3) {
+  width: 350px;
+  height: 350px;
+  background: #9d00ff;
+  top: 40%;
+  left: 40%;
+  animation-delay: -10s;
+}
+
+@keyframes blob-move {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  25% {
+    transform: translate(100px, -50px) scale(1.2);
+  }
+  50% {
+    transform: translate(-50px, 100px) scale(0.8);
+  }
+  75% {
+    transform: translate(-100px, -100px) scale(1.1);
+  }
+  100% {
+    transform: translate(50px, 50px) scale(1);
+  }
+}
+
+.card {
+  @apply bg-[var(--bg-card)] rounded-xl p-6 shadow-lg transition-all;
+}
+
+/* Background image with blur effect */
+.homepage-bg {
+  background-image: url('/images/background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(5px);
+  opacity: 0.7;
+  z-index: -10;
+}
+
+.bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-primary);
+  opacity: 0.4;
+  z-index: -9;
+}

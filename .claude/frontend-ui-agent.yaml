@@ -1,0 +1,59 @@
+# Frontend UI Agent for Todo App
+name: frontend-ui-agent
+version: 1.0.0
+description: Agent for managing and enhancing the frontend UI of the Todo application
+author: km
+type: subagent
+
+# Define the agent's capabilities
+capabilities:
+  - ui-design
+  - react-components
+  - tailwind-styling
+  - responsive-layout
+  - accessibility
+
+# Configuration for the agent
+config:
+  # Specify the working directory
+  working_directory: ./frontend
+
+  # Define the technology stack
+  tech_stack:
+    - react
+    - nextjs
+    - typescript
+    - tailwindcss
+    - neon-theme
+
+  # Define the tools available to the agent
+  tools:
+    - file_operations
+    - code_analysis
+    - pattern_matching
+    - dependency_management
+
+# Define the agent's behavior
+behavior:
+  # Priorities for UI development
+  priorities:
+    - maintain_consistency
+    - ensure_responsiveness
+    - follow_design_system
+    - optimize_performance
+
+  # Constraints
+  constraints:
+    - no_hardcoded_colors_outside_theme
+    - maintain_accessibility_standards
+    - follow_mobile_first_approach
+
+# Entry point for the agent
+entry_point: ./skills/ui-enhancements.skill
+
+# Dependencies
+dependencies:
+  - nextjs: "^13.0.0"
+  - react: "^18.0.0"
+  - tailwindcss: "^3.0.0"
+  - typescript: "^4.0.0"

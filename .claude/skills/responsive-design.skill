@@ -1,0 +1,92 @@
+# Responsive Design Skill
+name: responsive-design
+version: 1.0.0
+description: Reusable skill for implementing responsive design patterns
+category: ui-design
+tags: [responsive, mobile-first, breakpoints, tailwind]
+
+# Parameters that can be passed to the skill
+parameters:
+  - name: target_component
+    type: string
+    required: true
+    description: Component to make responsive
+
+  - name: breakpoints
+    type: array
+    required: false
+    default: ["sm", "md", "lg", "xl"]
+    description: Breakpoints to implement
+
+  - name: layout_type
+    type: string
+    required: false
+    default: "grid"
+    enum: ["grid", "flex", "stack"]
+    description: Type of responsive layout to implement
+
+# Prerequisites for the skill
+prerequisites:
+  - file_exists: ./frontend/src/components/${target_component}/index.tsx
+  - has_dependency: tailwindcss
+  - has_config: tailwind.config.js
+
+# Execution steps
+steps:
+  # Step 1: Analyze current component structure
+  - name: analyze_structure
+    action: code_analysis
+    target: ./frontend/src/components/${target_component}/index.tsx
+    output: component_structure
+
+  # Step 2: Identify responsive requirements
+  - name: identify_requirements
+    action: pattern_match
+    target: ./frontend/src/components/${target_component}/index.tsx
+    pattern: "layout_elements"
+    output: responsive_elements
+
+  # Step 3: Apply responsive classes based on layout type
+  - name: apply_responsive_classes
+    action: modify_file
+    target: ./frontend/src/components/${target_component}/index.tsx
+    operations:
+      - add_breakpoint_prefixes: ${breakpoints}
+      - update_layout_classes: ${layout_type}
+      - add_hidden_classes: ${breakpoints}
+
+  # Step 4: Add responsive utility functions
+  - name: add_utility_functions
+    action: modify_file
+    target: ./frontend/src/utils/responsive.ts
+    operations:
+      - add_media_queries: ${breakpoints}
+      - add_size_helpers: ${layout_type}
+
+  # Step 5: Test responsive implementation
+  - name: test_responsiveness
+    action: validate_responsive_design
+    target: ./frontend/src/components/${target_component}/index.tsx
+    breakpoints: ${breakpoints}
+
+# Output of the skill
+output:
+  success_message: "Responsive design applied to ${target_component}"
+  modified_files:
+    - ./frontend/src/components/${target_component}/index.tsx
+    - ./frontend/src/utils/responsive.ts
+  responsive_features:
+    breakpoints: ${breakpoints}
+    layout_type: ${layout_type}
+    tested_sizes: ["mobile", "tablet", "desktop"]
+
+# Rollback capability
+rollback:
+  - restore_from_backup: ./frontend/src/components/${target_component}/index.tsx.backup
+
+# Reusable patterns this skill implements
+patterns:
+  - mobile_first_approach
+  - semantic_html_structure
+  - scalable_breakpoint_system
+  - progressive_enhancement

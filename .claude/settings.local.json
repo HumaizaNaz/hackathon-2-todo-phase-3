@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell Select-String -Path \"C:\\\\Users\\\\km\\\\Desktop\\\\docs\\\\hackatho-2\\\\phase-2\\\\frontend\\\\src\\\\app\\\\globals.css\" -Pattern \"neon\")",
+      "Bash(powershell Select-String -Path \"C:\\\\Users\\\\km\\\\Desktop\\\\docs\\\\hackatho-2\\\\phase-2\\\\frontend\\\\src\\\\\" -Recurse -Pattern \"neon-cyan\\\\|neon-pink \")",
+      "Bash(dir /s \"C:\\\\Users\\\\km\\\\Desktop\\\\docs\\\\hackatho-2\\\\phase-2\\\\backend\"\")",
+      "Bash(dir frontend/*.env*)",
+      "Bash(del \"C:\\\\Users\\\\km\\\\Desktop\\\\docs\\\\hackatho-2\\\\phase-2\\\\frontend\\\\src\\\\components\\\\ClientThemeProvider.tsx\")",
+      "Bash(del \"C:\\\\Users\\\\km\\\\Desktop\\\\docs\\\\hackatho-2\\\\phase-2\\\\backend\\\\models\\\\task_history.py\")",
+      "Bash(powershell Remove-Item \"C:\\\\Users\\\\km\\\\Desktop\\\\docs\\\\hackatho-2\\\\phase-2\\\\backend\\\\models\\\\task_history.py\")",
+      "Bash(dir \"C:\\\\Users\\\\km\\\\Desktop\\\\docs\\\\hackatho-2\\\\phase-2\\\\backend\\\\models\\\\task_history.py\")",
+      "Skill(sp.phr)",
+      "Bash(dir \"C:\\\\Users\\\\km\\\\Desktop\\\\docs\\\\hackatho-2\\\\phase-2\\\\backend\")",
+      "Bash(git fetch --all --prune)",
+      "Bash(.specify/scripts/powershell/check-prerequisites.ps1 -Json -PathsOnly)",
+      "Bash(.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks)",
+      "Bash(powershell -ExecutionPolicy Bypass -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json -RequireTasks -IncludeTasks)",
+      "Bash(if [ -d \"C:\\\\Users\\\\km\\\\Desktop\\\\docs\\\\hackatho-2\\\\phase-3\\\\specs\\\\002-todo-p1\\\\checklists\" ])",
+      "Bash(then ls \"C:\\\\Users\\\\km\\\\Desktop\\\\docs\\\\hackatho-2\\\\phase-3\\\\specs\\\\002-todo-p1\\\\checklists\")",
+      "Bash(else echo \"No checklists directory found\")",
+      "Bash(fi)",
+      "Bash(dir /s)",
+      "Bash(npm install:*)",
+      "Bash(npm run dev)",
+      "Bash(dir)",
+      "Bash(dir mcp-server)",
+      "Bash(powershell -Command \"Stop-Process -Id 6936 -Force\")",
+      "Bash(python main.py)",
+      "Bash(curl http://localhost:8002/)",
+      "Bash(powershell -Command \"Stop-Process -Name python -Force\")"
+    ]
+  }
+}

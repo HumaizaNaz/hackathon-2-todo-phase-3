@@ -1,0 +1,107 @@
+# Claude Code Configuration for Todo App Frontend
+version: 1.0.0
+name: todo-frontend-claude-config
+description: Configuration for Claude Code agents and skills for the Todo App frontend
+
+# Agent definitions
+agents:
+  - name: frontend-ui-agent
+    path: ./.cloude/frontend-ui-agent.yaml
+    enabled: true
+    triggers:
+      - file_change: "./frontend/**/*.{tsx,jsx,css,scss}"
+      - command: "enhance-ui"
+      - command: "create-component"
+
+# Skills registry
+skills:
+  - name: ui-enhancements
+    path: ./.cloude/skills/ui-enhancements.skill
+    category: ui-design
+    enabled: true
+
+  - name: theme-management
+    path: ./.cloude/skills/theme-management.skill
+    category: styling
+    enabled: true
+
+  - name: responsive-design
+    path: ./.cloude/skills/responsive-design.skill
+    category: ui-design
+    enabled: true
+
+  - name: component-creation
+    path: ./.cloude/skills/component-creation.skill
+    category: component-development
+    enabled: true
+
+# Project-specific settings
+settings:
+  # Define the frontend directory structure
+  frontend:
+    components_dir: "./frontend/src/components"
+    pages_dir: "./frontend/src/app"
+    styles_dir: "./frontend/src/styles"
+    utils_dir: "./frontend/src/utils"
+    context_dir: "./frontend/src/context"
+    lib_dir: "./frontend/src/lib"
+
+  # Technology stack
+  tech_stack:
+    framework: "nextjs"
+    language: "typescript"
+    styling: "tailwindcss"
+    state_management: "react-context"
+
+  # Coding standards
+  standards:
+    naming_convention: "kebab-case-for-files"
+    component_structure: "folder-with-index"
+    type_definitions: "separate-file"
+    testing_framework: "jest"
+
+# Hooks and automation
+hooks:
+  pre_commit:
+    - lint: "npm run lint"
+    - type_check: "npm run type-check"
+  post_create_component:
+    - run_tests: "npm run test -- ${component_name}"
+
+# Global parameters that can be used across skills
+global_parameters:
+  theme:
+    primary_color: "var(--neon-cyan)"
+    secondary_color: "var(--neon-pink)"
+    background_primary: "var(--bg-primary)"
+    background_card: "var(--bg-card)"
+    text_primary: "var(--text-primary)"
+    text_secondary: "var(--text-secondary)"
+    border_neon: "var(--border-neon)"
+
+# Patterns for reusable intelligence
+patterns:
+  - name: neon_theme_pattern
+    description: Consistent application of neon theme colors
+    applies_to: ["components", "pages", "layouts"]
+
+  - name: responsive_grid_pattern
+    description: Mobile-first responsive grid layouts
+    applies_to: ["layouts", "containers", "dashboards"]
+
+  - name: accessible_ui_pattern
+    description: Accessibility-compliant UI components
+    applies_to: ["components", "forms", "navigation"]
+
+# Integration settings
+integrations:
+  # Editor integration settings
+  editor:
+    code_lens: true
+    inline_help: true
+    quick_actions: true
+
+  # Version control integration
+  git:
+    auto_stage: true
+    commit_templates: true
