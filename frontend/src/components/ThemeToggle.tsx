@@ -15,7 +15,7 @@ const ThemeToggle: React.FC = () => {
       <div className={`absolute inset-0 rounded-full transition-all duration-300 ${
         theme === 'dark'
           ? 'bg-gradient-to-r from-[#ff00ff] to-[#9d00ff]'
-          : 'bg-gradient-to-r from-[#00ffff] to-[#00bfff]'
+          : 'bg-gradient-to-r from-[#c7d2fe] to-[#d0d5ff]'
       }`}></div>
 
       {/* Slider */}

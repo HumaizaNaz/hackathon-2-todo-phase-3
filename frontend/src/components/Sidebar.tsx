@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ListTodo, Settings, LogOut, User, Home, MessageSquare, Menu, X } from "lucide-react";
+import { LayoutDashboard, BarChart3, ListTodo, PlusCircle, CheckSquare, Circle, Archive, Calendar as CalendarIcon, Settings, LogOut, User, Home, MessageSquare, Menu, X } from "lucide-react";
 import { useState, useRef } from "react";
 
 export default function Sidebar({ onLogout }: { onLogout: () => void }) {
@@ -17,7 +17,13 @@ export default function Sidebar({ onLogout }: { onLogout: () => void }) {
   const menuItems = [
     { href: "/", label: "Home", icon: Home },
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/dashboard/todos", label: "Todos", icon: ListTodo },
+    
+    
+    { href: "/dashboard/todos/new", label: "Add Task", icon: PlusCircle },
+    { href: "/dashboard/todos/completed", label: "Completed", icon: CheckSquare },
+    { href: "/dashboard/todos/pending", label: "Pending", icon: Circle },
+    { href: "/dashboard/todos/missed", label: "Missed", icon: CalendarIcon }, // Tasks past due date
+   
     { href: "/dashboard/chat", label: "AI Chat", icon: MessageSquare },
     { href: "/dashboard/profile", label: "Profile", icon: User },
     { href: "/dashboard/settings", label: "Settings", icon: Settings },
@@ -76,7 +82,7 @@ export default function Sidebar({ onLogout }: { onLogout: () => void }) {
                       href={item.href}
                       className={`flex items-center px-4 py-3 rounded-lg transition-all duration-300 ${
                         isActive(item.href)
-                          ? "bg-gradient-to-r from-[#ff00ff]/20 to-[#00ffff]/20 text-[color:var(--neon-cyan)] border border-[color:var(--border-neon)] shadow-[0_0_15px_rgba(255,0,255,0.3)]"
+                          ? "bg-[color:var(--neon-pink)]/10 text-[color:var(--neon-cyan)] border border-[color:var(--border-neon)]"
                           : "text-[color:var(--text-secondary)] hover:text-[color:var(--neon-cyan)] hover:bg-[color:var(--bg-primary)]/30"
                       }`}
                       onClick={() => setIsMobileMenuOpen(false)}

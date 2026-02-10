@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { getAuthToken } from '../lib/auth-client';
 
 interface Message {
   id: string;
@@ -42,15 +43,23 @@ const ChatInterface = ({ userId }: { userId: string }) => {
     try {
       // Get conversation ID from localStorage
       const storedConversationId = localStorage.getItem('conversation_id');
+      
+      // Get auth token
+      const token = getAuthToken();
+      if (!token) {
+        throw new Error('Authentication token not found. Please log in again.');
+      }
 
-      // Construct the API URL using the environment variable
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/${userId}/chat`;
+      // Construct the API URL to point to the backend chat endpoint
+      const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+      const apiUrl = `${backendUrl}/api/${userId}/chat`;
 
       // Send message to backend using API library
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
           message: inputValue,
@@ -95,51 +104,16 @@ const ChatInterface = ({ userId }: { userId: string }) => {
   };
 
   return (
-    <div
-      className="flex flex-col h-full rounded-lg"
-      style={{
-        backgroundColor: 'var(--bg-card)',
-        color: 'var(--text-primary)',
-      }}
-    >
+    <div className="flex flex-col h-full rounded-lg bg-[color:var(--bg-card)] text-[color:var(--text-primary)]">
       {/* Chat header */}
-      <div
-        className="px-6 py-4 border-b rounded-t-lg"
-        style={{
-          backgroundColor: 'rgba(255, 0, 255, 0.1)',
-          borderColor: 'var(--border-neon)',
-        }}
-      >
-        <h2
-          className="text-xl font-semibold neon-text"
-          style={{
-            color: 'var(--neon-cyan)',
-            textShadow: '0 0 8px var(--neon-cyan), 0 0 15px var(--neon-cyan)',
-          }}
-        >
-          AI Task Assistant
-        </h2>
-        <p
-          className="text-sm"
-          style={{
-            color: 'var(--text-secondary)',
-          }}
-        >
-          Manage your tasks with natural language
-        </p>
-      </div>
+     
 
       {/* Messages container */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[500px]">
         {messages.length === 0 ? (
-          <div
-            className="text-center mt-8"
-            style={{
-              color: 'var(--text-secondary)',
-            }}
-          >
+          <div className="text-center mt-8 text-[color:var(--text-secondary)]">
             <p>Start a conversation to manage your tasks!</p>
-            <p className="mt-2 text-sm">Try saying: "Add a task to buy groceries"</p>
+            <p className="mt-2 text-sm">Try saying: &quot;Add a task to buy groceries&quot;</p>
           </div>
         ) : (
           messages.map((message) => (
@@ -151,31 +125,16 @@ const ChatInterface = ({ userId }: { userId: string }) => {
             >
               <div
                 className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                  message.role === 'user' ? 'text-white' : ''
+                  message.role === 'user'
+                    ? 'bg-[color:var(--neon-pink)] text-white border border-[color:var(--neon-pink)]'
+                    : 'bg-[color:var(--bg-input)] text-[color:var(--text-primary)] border border-[color:var(--border-neon)]'
                 }`}
-                style={{
-                  backgroundColor: message.role === 'user'
-                    ? 'var(--neon-pink)'
-                    : 'rgba(0, 255, 255, 0.1)',
-                  color: message.role === 'user'
-                    ? 'white'
-                    : 'var(--text-primary)',
-                  border: message.role === 'user'
-                    ? '1px solid var(--neon-pink)'
-                    : '1px solid var(--neon-cyan)',
-                  boxShadow: message.role === 'user'
-                    ? '0 0 10px var(--neon-pink)'
-                    : '0 0 10px var(--neon-cyan)',
-                }}
               >
                 <div className="whitespace-pre-wrap">{message.content}</div>
                 <div
-                  className="text-xs mt-1"
-                  style={{
-                    color: message.role === 'user'
-                      ? 'rgba(255, 255, 255, 0.7)'
-                      : 'var(--text-secondary)',
-                  }}
+                  className={`text-xs mt-1 ${
+                    message.role === 'user' ? 'text-white/70' : 'text-[color:var(--text-secondary)]'
+                  }`}
                 >
                   {message.timestamp.toLocaleTimeString([], {
                     hour: '2-digit',
@@ -188,15 +147,7 @@ const ChatInterface = ({ userId }: { userId: string }) => {
         )}
         {isLoading && (
           <div className="flex justify-start">
-            <div
-              className="rounded-lg px-4 py-2 max-w-[80%]"
-              style={{
-                backgroundColor: 'rgba(0, 255, 255, 0.1)',
-                color: 'var(--text-primary)',
-                border: '1px solid var(--neon-cyan)',
-                boxShadow: '0 0 10px var(--neon-cyan)',
-              }}
-            >
+            <div className="rounded-lg px-4 py-2 max-w-[80%] bg-[color:var(--bg-input)] text-[color:var(--text-primary)] border border-[color:var(--border-neon)]">
               <div>Thinking...</div>
             </div>
           </div>
@@ -205,35 +156,19 @@ const ChatInterface = ({ userId }: { userId: string }) => {
       </div>
 
       {/* Input area */}
-      <div
-        className="border-t p-4"
-        style={{
-          borderColor: 'var(--border-neon)',
-        }}
-      >
+      <div className="border-t border-[color:var(--border-neon)] p-4">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Type your message here..."
-            className="flex-1 rounded-lg px-4 py-2 focus:outline-none"
-            style={{
-              backgroundColor: 'var(--bg-input)',
-              color: 'var(--text-primary)',
-              border: '1px solid var(--border-neon)',
-            }}
+            className="flex-1 rounded-lg px-4 py-2 focus:outline-none bg-[color:var(--bg-input)] text-[color:var(--text-primary)] border border-[color:var(--border-neon)]"
             disabled={isLoading}
           />
           <button
             type="submit"
-            className="rounded-lg px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-            style={{
-              backgroundColor: 'var(--neon-cyan)',
-              color: 'var(--bg-primary)',
-              border: '1px solid var(--neon-cyan)',
-              boxShadow: '0 0 10px var(--neon-cyan)',
-            }}
+            className="neon-button-primary rounded-lg px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isLoading || !inputValue.trim()}
           >
             Send

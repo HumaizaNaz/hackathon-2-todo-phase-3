@@ -4,113 +4,184 @@
 @tailwind utilities;
 
 :root {
-  /* Light Mode - Professional Neon */
-  --bg-primary: #f8fafc; /* Clean light background */
-  --bg-card: #ffffff; /* Pure white cards */
-  --bg-input: #f1f5f9; /* Subtle input background */
-  --text-primary: #0f172a; /* Dark gray for readability */
-  --text-secondary: #64748b; /* Muted secondary text */
-  --border-neon: #ff00ff80; /* Pink glow effect */
-  --neon-pink: #ff00ff; /* Vibrant pink */
-  --neon-cyan: #00ffff; /* Vibrant cyan */
-  --neon-purple: #9d00ff; /* Vibrant purple */
+  /* Light Mode - Clean Professional */
+  --bg-primary: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-input: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border-neon: #e2e8f0;
+  --neon-pink: #4f46e5;
+  --neon-cyan: #0f766e;
+  --neon-purple: #6366f1;
+  --neon-yellow: #b45309;
 }
 
 .dark {
-  /* Dark Mode - Strong Neon */
-  --bg-primary: #0a0a0f; /* Deep black */
+  /* Dark Mode - Strong Neon (NO CHANGES) */
+  --bg-primary: #0a0a0f;
   --bg-card: #12121a;
-  --bg-input: #1e293b; /* Darker input background */
+  --bg-input: #1e293b;
   --text-primary: #e0e0ff;
   --text-secondary: #a0a0c0;
-  --border-neon: #ff00ffaa; /* Bright pink glow */
+  --border-neon: #ff00ffaa;
   --neon-pink: #ff00ff;
   --neon-cyan: #00ffff;
   --neon-purple: #9d00ff;
+  --neon-yellow: #facc15;
 }
 
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Custom utility classes for neon effects */
+/* ===== Neon Text ===== */
 .neon-text {
-  color: #00ffff;
-  text-shadow: 0 0 8px #00ffff, 0 0 15px #00ffff;
+  color: var(--neon-cyan);
 }
 
-.light .neon-text {
-  text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
-  color: #008080; /* Darker cyan for better light mode contrast */
+:root .neon-text {
+  color: #0891b2;
+  text-shadow: none;
 }
 
 .dark .neon-text {
+  color: #00ffff;
   text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
 }
 
+/* ===== Text Gradient ===== */
 .neon-text-gradient {
-  background: linear-gradient(45deg, #ff00ff, #00ffff, #9d00ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
+}
+
+:root .neon-text-gradient {
+  background: linear-gradient(135deg, #d946ef, #0f766e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: none;
+}
+
+.dark .neon-text-gradient {
+  background: linear-gradient(45deg, #ff00ff, #00ffff, #9d00ff);
+  -webkit-background-clip: text;
+  background-clip: text;
   text-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
 }
 
+/* ===== Neon Border ===== */
 .neon-border {
   @apply border-2 rounded-lg;
-  border-color: #ff00ff;
-  box-shadow: 0 0 10px #ff00ff;
+  border-color: var(--border-neon);
+}
+
+:root .neon-border {
+  box-shadow: none;
 }
 
 .dark .neon-border {
+  border-color: #ff00ff;
   box-shadow: 0 0 15px #ff00ff, 0 0 30px #ff00ff;
 }
 
+/* ===== Neon Card ===== */
 .neon-card {
-  @apply bg-[var(--bg-card)] rounded-xl p-6 shadow-lg transition-all duration-300 border border-[color:var(--border-neon)];
+  @apply rounded-xl p-6 transition-all duration-300;
   background: var(--bg-card);
+  border: 1px solid var(--border-neon);
+}
+
+:root .neon-card {
+  box-shadow: 0 1px 3px rgba(217, 70, 239, 0.1), 0 4px 12px rgba(217, 70, 239, 0.15);
+}
+
+:root .neon-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(217, 70, 239, 0.2), 0 12px 32px rgba(217, 70, 239, 0.25);
+}
+
+.dark .neon-card {
+  border-color: var(--border-neon);
   backdrop-filter: blur(10px);
   box-shadow: 0 0 15px var(--border-neon);
 }
 
-.neon-card:hover {
+.dark .neon-card:hover {
   transform: scale(1.05);
   box-shadow: 0 0 25px var(--border-neon);
 }
 
+/* ===== Primary Button ===== */
 .neon-button-primary {
-  @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center border-2;
-  background: linear-gradient(45deg, #ff00ff, #9d00ff);
-  border-color: #ff00ff;
+  @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center;
   color: white;
+}
+
+:root .neon-button-primary {
+  background: linear-gradient(135deg, #d946ef, #7c3aed);
+  border: 2px solid #d946ef;
+  box-shadow: 0 1px 3px rgba(217, 70, 239, 0.2), 0 4px 12px rgba(217, 70, 239, 0.15);
+  text-shadow: none;
+}
+
+:root .neon-button-primary:hover {
+  background: linear-gradient(135deg, #c026d3, #6d28d9);
+  border-color: #c026d3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(217, 70, 239, 0.25), 0 8px 24px rgba(217, 70, 239, 0.3);
+}
+
+.dark .neon-button-primary {
+  background: linear-gradient(45deg, #ff00ff, #9d00ff);
+  border: 2px solid #ff00ff;
   box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
   text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
-.neon-button-primary:hover {
+.dark .neon-button-primary:hover {
   transform: scale(1.05);
   box-shadow: 0 0 25px rgba(255, 0, 255, 0.8);
   background: linear-gradient(45deg, #ff33ff, #b033ff);
 }
 
+/* ===== Secondary Button ===== */
 .neon-button-secondary {
-  @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center border-2;
+  @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center;
   background: transparent;
-  border-color: #00ffff;
+}
+
+:root .neon-button-secondary {
+  border: 2px solid #cbd5e1;
+  color: #334155;
+  box-shadow: none;
+}
+
+:root .neon-button-secondary:hover {
+  border-color: #4f46e5;
+  color: #4338ca;
+  background: rgba(79, 70, 229, 0.05);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.15);
+}
+
+.dark .neon-button-secondary {
+  border: 2px solid #00ffff;
   color: #00ffff;
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
-.neon-button-secondary:hover {
+.dark .neon-button-secondary:hover {
   transform: scale(1.05);
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
   background: rgba(0, 255, 255, 0.1);
 }
 
-/* Animated Blob Background */
+/* ===== Animated Blob Background ===== */
 .blob-c {
   position: absolute;
   width: 100%;
@@ -123,9 +194,20 @@ body {
 .blob {
   position: absolute;
   border-radius: 50%;
+  filter: blur(80px);
+  animation: blob-move 15s infinite alternate;
+}
+
+/* Light mode: neon-colored blobs at 8% opacity */
+:root .blob {
+  mix-blend-mode: normal;
+  opacity: 0.08;
+}
+
+/* Dark mode: vibrant glowing blobs */
+.dark .blob {
   mix-blend-mode: screen;
   filter: blur(60px);
-  animation: blob-move 15s infinite alternate;
   opacity: 0.6;
 }
 
@@ -138,6 +220,10 @@ body {
   animation-delay: 0s;
 }
 
+:root .blob:nth-child(1) {
+  background: #a5b4fc;
+}
+
 .blob:nth-child(2) {
   width: 250px;
   height: 250px;
@@ -147,6 +233,10 @@ body {
   animation-delay: -5s;
 }
 
+:root .blob:nth-child(2) {
+  background: #a7f3d0;
+}
+
 .blob:nth-child(3) {
   width: 350px;
   height: 350px;
@@ -154,6 +244,10 @@ body {
   top: 40%;
   left: 40%;
   animation-delay: -10s;
+}
+
+:root .blob:nth-child(3) {
+  background: #c4b5fd;
 }
 
 @keyframes blob-move {
@@ -178,7 +272,44 @@ body {
   @apply bg-[var(--bg-card)] rounded-xl p-6 shadow-lg transition-all;
 }
 
-/* Background image with blur effect */
+/* ===== Light Mode: Clean shadows for all neon-bordered elements ===== */
+
+:root [class*="border-[color:var(--border-neon)]"] {
+  border-color: #d946ef !important;
+  box-shadow: 0 1px 3px rgba(217, 70, 239, 0.1), 0 4px 12px rgba(217, 70, 239, 0.15) !important;
+}
+
+:root [class*="border-[color:var(--border-neon)]"]:hover {
+  box-shadow: 0 6px 16px rgba(217, 70, 239, 0.2), 0 12px 32px rgba(217, 70, 239, 0.25) !important;
+}
+
+/* Override neon glow shadows in light mode */
+:root [class*="shadow-[0_0_15px"] {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+}
+
+:root [class*="shadow-[0_0_15px"]:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Light mode sidebar & navbar */
+:root [class*="border-r"][class*="border-[color:var(--border-neon)]"] {
+  box-shadow: 1px 0 0 #e2e8f0 !important;
+}
+
+:root [class*="border-b"][class*="border-[color:var(--border-neon)]"] {
+  box-shadow: 0 1px 0 #e2e8f0 !important;
+}
+
+/* Light mode input focus */
+:root input:focus,
+:root textarea:focus,
+:root select:focus {
+  border-color: #d946ef !important;
+  box-shadow: 0 0 0 3px rgba(217, 70, 239, 0.2) !important;
+}
+
+/* ===== Background image with blur effect ===== */
 .homepage-bg {
   background-image: url('/images/background.jpg');
   background-size: cover;

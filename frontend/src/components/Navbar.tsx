@@ -20,8 +20,8 @@ export default function Navbar() {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <h1 className="text-3xl font-bold text-[color:var(--neon-cyan)] tracking-wide neon-text" style={{ textShadow: '0 0 8px #00ffff, 0 0 15px #00ffff' }}>
-              Neon Todo
+            <h1 className="text-3xl font-bold text-[color:var(--neon-cyan)] tracking-wide neon-text">
+              Zaura
             </h1>
           </Link>
 
@@ -44,7 +44,7 @@ export default function Navbar() {
                 </Link>
                 <button
                   onClick={logout}
-                  className="px-6 py-2 rounded-lg bg-gradient-to-r from-[#ff00ff]/20 to-[#00ffff]/20 hover:from-[#ff00ff]/30 hover:to-[#00ffff]/30 border border-[color:var(--border-neon)] transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_15px_rgba(255,0,255,0.4)] text-[color:var(--text-primary)]"
+                  className="px-6 py-2 rounded-lg bg-[color:var(--neon-pink)]/10 hover:bg-[color:var(--neon-pink)]/20 border border-[color:var(--border-neon)] transition-all duration-300 transform hover:scale-105 text-[color:var(--text-primary)]"
                 >
                   Logout
                 </button>

@@ -3,7 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import ThemeProviderWrapper from "../components/ThemeProviderWrapper";
-import FloatingChat from "../components/FloatingChat";
+
 
 export default function RootLayout({
   children,
@@ -18,7 +18,7 @@ export default function RootLayout({
             <div className="flex flex-col min-h-screen">
               <Navbar />
               <main className="flex-grow">{children}</main>
-              <FloatingChat />
+             
             </div>
           </AuthProvider>
         </ThemeProviderWrapper>
